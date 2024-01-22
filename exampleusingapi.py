@@ -2,7 +2,7 @@
 import sys
 from weather_au import api
 
-loc = '4000'
+loc = '4051'
 w = api.WeatherApi(search=loc, debug=0)
 
 location = w.location()
@@ -23,4 +23,4 @@ observations = w.observations()
 print(f"\nObservations (temp): {observations['temp']:2}")
 
 forecast_rain = w.forecast_rain()
-print(f"Forecast Rain:       amount:{forecast_rain['amount']}, chance:{forecast_rain['chance']}")
+print(f"Forecast Rain:      amount:{forecast_rain['amount']}, chance:{forecast_rain['chance']}")
