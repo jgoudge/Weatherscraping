@@ -1,7 +1,10 @@
 import sys
 from weather_au import api
 
-loc = '3802'
+
+#Loc is the Postcode of the area of interest 
+    # - limitation could be same postcodes for different areas. (depends on how accurate data needs to be) 
+loc = '4000'
 w = api.WeatherApi(search=loc, debug=0)
 
 print(repr(w))
@@ -14,7 +17,7 @@ location = w.location()
 if location is None:
     sys.exit('Search failed for location ' + loc)
 
-
+#Prints the associated State and Found suburb 
 print(f"\nLocation: {location['name']} {location['state']}, timezone:{location['timezone']}\n")
 
 
@@ -24,15 +27,17 @@ for warn in w.warnings():
     warning = w.warning(id=warn['id'])
     print(f"Warning title:        {warning['title']}")
 
-
+#Retrieves observed temperature 
 observations = w.observations()
 print(f"Observations (temp): {observations['temp']:2}")
 
-
+#retrieves rain forecast including amount of rain and chance 
 forecast_rain = w.forecast_rain()
 print(f"Forecast Rain:       amount:{forecast_rain['amount']}, chance:{forecast_rain['chance']}")
 
 
+# Daily prints the expected forecast over a 7 day period 
+        # includes temperature minimum, maximum and text to describe conditions i.e "cloudy"
 print('\nDaily:')
 for f in w.forecasts_daily():
     if f['temp_min'] is None:
