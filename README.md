@@ -6,9 +6,12 @@ Retrieve localized weather warnings using temperature and precipitation data fro
 Correct hypothesis of Ice Roads is governed by the following conditions: (advised by http://www.bom.gov.au/metadata/catalogue/19115/ANZCW0503900443?template=full )
 
 •	Road weather alerts are issued when weather elements or phenomena are expected to contribute to hazardous driving conditions
+
 •	Alerts are issued only when conditions are likely to be worse than normal for the season and location.
+
 •	Criteria for issuing Road Weather Alerts are if the following conditions exist and NO severe weather warning is in force:
 g) Ice On Roads:
+
 •	defined by the presence of: (accumulated precipitation of <2mm of PoP of greater than 25%) & temperature <2 degrees celcius
 
 # Use case Documentation (Work in progress)
