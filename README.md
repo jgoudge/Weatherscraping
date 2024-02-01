@@ -12,7 +12,7 @@ Correct hypothesis of Ice Roads is governed by the following conditions: (advise
 •	Criteria for issuing Road Weather Alerts are if the following conditions exist and NO severe weather warning is in force:
 g) Ice On Roads:
 
-•	defined by the presence of: (accumulated precipitation of <2mm of PoP of greater than 25%) & temperature <2 degrees celcius
+•Defined by the presence of: (accumulated precipitation of greater than 2mm or PoP of greater than 25%) and temperature of less than +2 degrees) within 12 hours of the warning start time or during the warning validity period.
 
 # Use case Documentation (Work in progress)
 •	See documentation "Use Case - Ice Roads Warning .docx" in the main branch files upload
