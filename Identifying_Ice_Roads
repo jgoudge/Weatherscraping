@@ -1,0 +1,137 @@
+import sys
+from weather_au import api
+import random
+
+
+#This is used to filter the Post Codes text file for valid postcodes in Australia 
+## uses function is_valid_location to append to list. 
+def is_valid_location(location_info):
+    # Check if location_info has at least three elements and valid postcodes
+    if len(location_info) >= 3:
+        try:
+            int(location_info[2])  # Check if the postcode is a valid integer
+            return True
+        except ValueError:
+            return False
+    return False
+
+# Read postcodes from a file
+with open('postcodes.txt') as file:
+    locations = [line.strip().split(',') for line in file if line.strip() and is_valid_location(line.strip().split(','))]
+
+# Use a set to keep track of seen postcodes
+seen_postcodes = set()
+unique_locations = []
+
+
+for location_info in locations:
+    loc_postcode = location_info[2]
+
+    # Check if the postcode is not seen before
+    if loc_postcode not in seen_postcodes:
+        seen_postcodes.add(loc_postcode)
+        unique_locations.append(location_info)
+
+# Sort the unique_locations based on the third element (postcode)
+unique_locations.sort(key=lambda x: int(x[2]) if len(x) >= 3 else float('inf'))
+
+#A list of postcodes that a valid to search 
+Valid_postcodes = []
+
+for location_info in unique_locations:
+    loc_name, loc_state, loc_postcode = location_info
+    loc = loc_postcode
+    
+    Valid_postcodes.append(loc)
+    
+    
+#print(Searched_postcode)
+
+
+## THIS SECTION IS FOR TESTING ONLY AS LARGE SAMPLE SIZES TAKE A WHILE TO FILTER ## 
+
+# Specify the number of samples you want (e.g., 50)
+#sample_size = 50
+
+# Check if the sample size is less than or equal to the length of the original list
+#if sample_size <= len(Valid_postcodes):
+    #random_sample = random.sample(Valid_postcodes, sample_size)
+    #Valid_postcodes = random_sample
+    #print(random_sample)
+#else:
+    #print("Sample size exceeds the length of the original list.")
+    
+    
+## SPECIFY A LOCATION THAT YOU NEED TO TEST ## 
+#Valid_postcodes = ['4000']
+
+
+#Tuple of Identified ice_roads in the format [min temperature, precipitation mm, postcode]
+ice_roads = []
+
+#SCOPE OF USE VARIATION ### 
+# some post codes have no difference in weather between them. to speed up the process remove every 
+# second element in place. 
+
+# Remove every second item in-place
+Valid_postcodes = Valid_postcodes[::2]
+
+
+for postcode in Valid_postcodes:  
+    w = api.WeatherApi(search=postcode, debug=0)
+
+    location = w.location()
+
+    # check if the search produced a result (other methods will also return None if the search fails).
+    if location is None:
+        #print(f"Search failed for location: {loc_name}, {loc_state}, {loc_postcode}")
+        continue
+
+    # Check if 'name', 'state', and 'timezone' keys exist before accessing them
+    location_name = location.get('name', 'Unknown')
+    location_state = location.get('state', 'Unknown')
+    location_timezone = location.get('timezone', 'Unknown')
+
+    print(f"\nLocation: {location_name} {location_state}, timezone:{location_timezone}, Postcode:{postcode}")
+
+    observations = w.observations()
+
+    # Check if 'temp' key exists and is not None before accessing it
+    if observations and 'temp' in observations and observations['temp'] is not None:
+        print(f"Observations (temp): {observations['temp']:2}")
+        
+    else:
+        print("Unable to retrieve valid temperature observations.")
+
+    forecast_rain = w.forecast_rain()
+    print(f"Forecast Rain:       amount:{forecast_rain['amount']}, chance:{forecast_rain['chance']}")
+
+    # Check if 'chance' key exists and has a non-None value
+    if 'chance' in forecast_rain and forecast_rain['chance'] is not None:
+        # Check if there is a chance of rain
+        if forecast_rain['chance']:
+            print(f"Forecast Rain:       amount:{forecast_rain['amount']}, chance:{forecast_rain['chance']}")    
+        else:
+            print(f"Forecast Rain:       amount:{forecast_rain['amount']}, chance:{forecast_rain['chance']}")     
+
+    for f in w.forecasts_daily():
+        if f['temp_min'] is None:
+            temp_min = '--'
+        else:
+            temp_min = f"{f['temp_min']:2}"
+
+        if f['temp_max'] is None:
+            temp_max = '--'
+        else:
+            temp_max = f"{f['temp_max']:2}"
+            
+    if f['temp_min'] > 20 and forecast_rain['amount']:
+        print("Temperature Min:", f['temp_min'],"Max:",f['temp_max'])
+        ice_roads.append((f['temp_min'],forecast_rain['amount']['max'],postcode))
+        print("\nformation of ice roads!!!!")
+
+
+print("\nPredicted formation of Ice on Roads", ice_roads)
+
+
+    
