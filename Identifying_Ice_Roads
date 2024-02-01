@@ -124,8 +124,11 @@ for postcode in Valid_postcodes:
             temp_max = '--'
         else:
             temp_max = f"{f['temp_max']:2}"
-            
-    if f['temp_min'] > 20 and forecast_rain['amount']:
+    
+    #Criteria to verify formation of ice roads, adjust these values to test functionality of code. 
+    #expected conditions to satisfy ice roads is below 2 degrees and precipitation of greater than 2mm
+
+    if f['temp_min'] < 2 and forecast_rain['amount']:
         print("Temperature Min:", f['temp_min'],"Max:",f['temp_max'])
         ice_roads.append((f['temp_min'],forecast_rain['amount']['max'],postcode))
         print("\nformation of ice roads!!!!")
