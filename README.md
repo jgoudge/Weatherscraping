@@ -1,6 +1,11 @@
 # Weather scraping (BOM)
 The purpose of the modules used within this project (weather-au) is to fetch weather data from various Australian Bureau of Meteorology websites to obtain relevant and up-to-date weather reports to be used to hypothesize formation of Ice on Australian Roads.
 
+Run Identifying_Ice_roads.py to retrieve a tuple of all locations in Australia predicted to have formation of Ice on Roads. 
+which uses a text file postcodes.txt to search through all postcodes in Australia. 
+
+for speed of search the list of post codes have been sorted in ascending order, duplicate post codes removed, and every second entry removed (for the scope of this it is assumed that neighbouring suburbs have the same weather conditions). However, These parameters can be easily modified to each use case. 
+
 # Project Description
 Retrieve localized weather warnings using temperature and precipitation data from BOM databases to predict the formation of Ice on Australian Roads. When an Area or Road is determined to be susceptible to the formation of Ice, only if required, advice to change driver behavior will be communicated through an HMI (Human interface) situated within the car.
 Correct hypothesis of Ice Roads is governed by the following conditions: (advised by http://www.bom.gov.au/metadata/catalogue/19115/ANZCW0503900443?template=full )
