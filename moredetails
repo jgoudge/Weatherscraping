@@ -8,8 +8,6 @@ loc = '4000'
 w = api.WeatherApi(search=loc, debug=0)
 
 print(repr(w))
-print(w.acknowedgment)
-
 
 location = w.location()
 
